@@ -150,10 +150,10 @@ packages:
     dependency: transitive
     description:
       name: shamsi_date
-      sha256: acbe6fbb178ae5307f1ea8b0d2079a1a2cfdc86fb74e6561b0c73d2e55129b2c
+      sha256: "19020ef0a001db3eabcec8657f8aa10b93b3746641d9eca64db9a41e6506645c"
       url: "https://pub.dev"
     source: hosted
-    version: "0.16.0"
+    version: "1.0.2"
   sky_engine:
     dependency: transitive
     description: flutter

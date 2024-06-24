@@ -1,6 +1,9 @@
-#  Jalali  Table Calendar Plus
+# Jalali  Table Calendar Plus
+
 A rewritten package of [jalali_table_calendar](https://pub.dev/packages/jalali_table_calendar)
+
 ## Jalali Calendar
+
 - Table view of the calendar
 - Range selection
 - Customizable holidays
@@ -11,9 +14,11 @@ A rewritten package of [jalali_table_calendar](https://pub.dev/packages/jalali_t
 ## Setup
 
 ### Add this line to the pubspec.yaml file
+
 ```yaml
-jalali_table_calendar_plus: ^1.0.0
+jalali_table_calendar_plus: ^1.0.1
 ```
+
 ```dart
 Widget buildCalendar(BuildContext context) {
   DateTime today = DateTime.now();
@@ -52,6 +57,16 @@ Widget buildCalendar(BuildContext context) {
 }
 
 ```
+
+## HolyDays
+
+HolyDay(year: Jalai_Year , month: Jalai_Month, day: Jalai_Day)
+
+| Parameter | Usage       | Data Type |
+ |-----------|-------------|-----------|
+| year      | Jalai Year  | Int       |
+| month     | Jalai Month | Int       |
+| day       | Jalai Day   | Int       |
 
 ## Parameters
 
@@ -64,11 +79,10 @@ Widget buildCalendar(BuildContext context) {
 | onDaySelected   | Method executed after single date selection          | DateTime                                          |
 | marker          | Method to receive user-designed markers for each day | (DateTime date, List<dynamic> eventsOfDay)        |
 
-
-
-
 ## تقویم جلالی
+
 بازنویسی شده پکیج   [jalal_table_calendar](https://pub.dev/packages/jalali_table_calendar)
+
 - نمای جدولی تقویم
 - انتخاب به صورت بازه ای
 - تعریف تعطیلات به صورت شخصی سازی شده
@@ -79,8 +93,9 @@ Widget buildCalendar(BuildContext context) {
 ## راه اندازی
 
 ### این خط را به فایل  pubspec.yaml اضافه کنید
+
 ```yaml
-jalali_table_calendar_plus: ^1.0.0
+jalali_table_calendar_plus: ^1.0.1
 ```
 
 ```dart
@@ -122,6 +137,15 @@ Widget buildCalendar(BuildContext context) {
 
 ```
 
+## HolyDays
+
+HolyDay(year: Jalai_Year , month: Jalai_Month, day: Jalai_Day)
+
+| پارامتر | کاربرد    | Data Type |
+|---------|-----------|-----------|
+| year    | سال جلالی | Int       |
+| month   | ماه جلالی | Int       |
+| day     | روز جلالی | Int       |
 
 ## پارامتر ها
 

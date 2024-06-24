@@ -11,7 +11,6 @@ typedef RangeDates = void Function(List<DateTime> dates);
 class JalaliTableCalendar extends StatefulWidget {
   const JalaliTableCalendar({
     super.key,
-    // required this.context,
     this.direction = TextDirection.rtl,
     this.onDaySelected,
     this.marker,
@@ -22,7 +21,6 @@ class JalaliTableCalendar extends StatefulWidget {
     this.customHolyDays = const [],
   });
 
-  // final BuildContext context;
   final TextDirection direction;
   final MarkerBuilder? marker;
   final OnDaySelected? onDaySelected;
