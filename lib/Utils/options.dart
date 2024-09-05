@@ -19,6 +19,6 @@ class JalaliTableCalendarOption {
     this.selectedDayShapeColor,
     this.daysOfWeekTitles,
     this.headerPadding,
-  }) : assert(
-            daysOfWeekTitles?.length == 7, "daysOfWeekTitles length must be 7");
+  }) : assert(daysOfWeekTitles == null || daysOfWeekTitles.length == 7,
+            "daysOfWeekTitles length must be 7");
 }
