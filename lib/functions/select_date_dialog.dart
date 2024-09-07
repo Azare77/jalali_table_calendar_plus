@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:jalali_table_calendar_plus/Utils/holy_day.dart';
 import 'package:jalali_table_calendar_plus/jalali_table_calendar_plus.dart';
 
 Future<DateTime?> pickDate({
