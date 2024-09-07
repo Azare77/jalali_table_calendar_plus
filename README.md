@@ -16,7 +16,7 @@ A rewritten package of [jalali_table_calendar](https://pub.dev/packages/jalali_t
 ### Add this line to the pubspec.yaml file
 
 ```yaml
-jalali_table_calendar_plus: ^1.0.1
+jalali_table_calendar_plus: ^1.1.0
 ```
 
 ```dart
@@ -29,6 +29,17 @@ Widget buildCalendar(BuildContext context) {
   return JalaliTableCalendar(
     events: events,
     range: range,
+    option: JalaliTableCalendarOption(
+      daysOfWeekTitles: [
+        "شنبه",
+        "یکشنبه",
+        "دوشنبه",
+        "سه شنبه",
+        "چهارشنبه",
+        "پنجشنبه",
+        "جمعه"
+      ],
+    ),
     customHolyDays: [
       // use jalali month and day for this
       HolyDay(month: 4, day: 10), // For Repeated Days
@@ -95,7 +106,7 @@ HolyDay(year: Jalai_Year , month: Jalai_Month, day: Jalai_Day)
 ### این خط را به فایل  pubspec.yaml اضافه کنید
 
 ```yaml
-jalali_table_calendar_plus: ^1.0.1
+jalali_table_calendar_plus: ^1.1.0
 ```
 
 ```dart
