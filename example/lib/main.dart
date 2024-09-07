@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:jalali_table_calendar_plus/Utils/holy_day.dart';
 import 'package:jalali_table_calendar_plus/jalali_table_calendar_plus.dart';
 
 void main() {
@@ -61,6 +60,17 @@ class _MyHomePageState extends State<MyHomePage> {
             JalaliTableCalendar(
               events: events,
               range: range,
+              option: JalaliTableCalendarOption(
+                daysOfWeekTitles: [
+                  "شنبه",
+                  "یکشنبه",
+                  "دوشنبه",
+                  "سه شنبه",
+                  "چهارشنبه",
+                  "پنجشنبه",
+                  "جمعه"
+                ],
+              ),
               customHolyDays: [
                 // use jalali month and day for this
                 HolyDay(month: 4, day: 10), // For Repeated Days

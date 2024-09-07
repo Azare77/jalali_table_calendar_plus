@@ -1,6 +1,9 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
-import 'package:jalali_table_calendar_plus/Utils/holy_day.dart';
+import 'package:jalali_table_calendar_plus/Utils/options.dart';
 import 'package:shamsi_date/shamsi_date.dart';
+
+import 'package:jalali_table_calendar_plus/Utils/holy_day.dart';
 
 part 'package:jalali_table_calendar_plus/Utils/select_year_month.dart';
 
@@ -19,6 +22,7 @@ class JalaliTableCalendar extends StatefulWidget {
     this.range = false,
     this.useOfficialHolyDays = true,
     this.customHolyDays = const [],
+    this.option,
   });
 
   final TextDirection direction;
@@ -29,6 +33,7 @@ class JalaliTableCalendar extends StatefulWidget {
   final bool range;
   final bool useOfficialHolyDays;
   final List<HolyDay> customHolyDays;
+  final JalaliTableCalendarOption? option;
 
   @override
   JalaliTableCalendarState createState() => JalaliTableCalendarState();
@@ -92,7 +97,7 @@ class JalaliTableCalendarState extends State<JalaliTableCalendar> {
       'اسفند',
     ];
     return Container(
-      padding: const EdgeInsets.all(16.0),
+      padding: widget.option?.headerPadding ?? const EdgeInsets.all(16.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -120,7 +125,8 @@ class JalaliTableCalendarState extends State<JalaliTableCalendar> {
             },
             child: Text(
               '${monthNames[_selectedPage.month - 1]} ${_selectedPage.year}',
-              style: const TextStyle(fontSize: 20.0),
+              style:
+                  widget.option?.headerStyle ?? const TextStyle(fontSize: 20.0),
             ),
           ),
           IconButton(
@@ -141,13 +147,15 @@ class JalaliTableCalendarState extends State<JalaliTableCalendar> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: List.generate(7, (index) {
+        final fridayColor = daysOfWeek[index] == 'ج' ? Colors.red : null;
         return Container(
           padding: const EdgeInsets.symmetric(vertical: 5.0),
           child: Center(
             child: Text(
-              daysOfWeek[index],
-              style: TextStyle(
-                  color: daysOfWeek[index] == 'ج' ? Colors.red : null),
+              widget.option?.daysOfWeekTitles?[index] ?? daysOfWeek[index],
+              style: widget.option?.daysOfWeekStyle
+                      ?.copyWith(color: fridayColor) ??
+                  TextStyle(color: fridayColor),
             ),
           ),
         );
@@ -205,6 +213,15 @@ class JalaliTableCalendarState extends State<JalaliTableCalendar> {
           Widget? marker = widget.marker != null
               ? widget.marker!(date.toDateTime(), dayEvents(date.toDateTime()))
               : null;
+
+          final styleColor = isToday && !isSelected
+              ? widget.option?.currentDayColor ?? themeData.primaryColorDark
+              : isSelected
+                  ? widget.option?.selectedDayColor ??
+                      themeData.scaffoldBackgroundColor
+                  : date.weekDay == 7 || isHolyDay
+                      ? Colors.red
+                      : null;
           return Stack(
             children: [
               GestureDetector(
@@ -222,20 +239,17 @@ class JalaliTableCalendarState extends State<JalaliTableCalendar> {
                 child: Container(
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: isSelected ? themeData.primaryColor : null,
+                    color: isSelected
+                        ? widget.option?.selectedDayShapeColor ??
+                            themeData.primaryColor
+                        : null,
                   ),
                   child: Center(
                     child: Text(
                       '${date.day}',
-                      style: TextStyle(
-                        color: isToday && !isSelected
-                            ? themeData.primaryColorDark
-                            : isSelected
-                                ? themeData.scaffoldBackgroundColor
-                                : date.weekDay == 7 || isHolyDay
-                                    ? Colors.red
-                                    : null,
-                      ),
+                      style: widget.option?.daysStyle
+                              ?.copyWith(color: styleColor) ??
+                          TextStyle(color: styleColor),
                     ),
                   ),
                 ),
