@@ -1,9 +1,7 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:jalali_table_calendar_plus/Utils/holy_day.dart';
 import 'package:jalali_table_calendar_plus/Utils/options.dart';
 import 'package:shamsi_date/shamsi_date.dart';
-
-import 'package:jalali_table_calendar_plus/Utils/holy_day.dart';
 
 part 'package:jalali_table_calendar_plus/Utils/select_year_month.dart';
 
@@ -23,7 +21,7 @@ class JalaliTableCalendar extends StatefulWidget {
     this.useOfficialHolyDays = true,
     this.customHolyDays = const [],
     this.option,
-    this.selectedDate,
+    this.initialDate,
   });
 
   final TextDirection direction;
@@ -35,7 +33,7 @@ class JalaliTableCalendar extends StatefulWidget {
   final bool useOfficialHolyDays;
   final List<HolyDay> customHolyDays;
   final JalaliTableCalendarOption? option;
-  final DateTime? selectedDate;
+  final DateTime? initialDate;
 
   @override
   JalaliTableCalendarState createState() => JalaliTableCalendarState();
@@ -46,41 +44,29 @@ class JalaliTableCalendarState extends State<JalaliTableCalendar> {
 
   Jalali? _endSelectDate;
 
-  Jalali _selectedDate = Jalali.now();
-  Jalali _selectedPage = Jalali.now();
+  late Jalali _selectedDate;
+
+  late Jalali _selectedPage;
+
   late PageController _pageController;
   late ThemeData themeData;
 
   @override
   void initState() {
-    super.initState();
-    _pageController = PageController(initialPage: _calculateInitialPage());
-  }
-
-  @override
-  void didUpdateWidget(covariant JalaliTableCalendar oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (widget.selectedDate != null) {
-      setState(() {
-        _selectedDate = Jalali.fromDateTime(widget.selectedDate!);
-      });
-
-      _pageController.animateToPage(
-        _calculateInitialPage(date: Jalali.fromDateTime(widget.selectedDate!)),
-        duration: const Duration(milliseconds: 300),
-        curve: Curves.easeInOut,
-      );
-    }
-  }
-
-  int _calculateInitialPage({Jalali? date}) {
-    int currentMonth;
-    if (date != null) {
-      currentMonth = date.month;
+    if (widget.initialDate != null) {
+      _selectedDate = Jalali.fromDateTime(widget.initialDate!);
+      _selectedPage = Jalali.fromDateTime(widget.initialDate!);
     } else {
-      currentMonth = Jalali.now().month;
+      _selectedDate = Jalali.now();
+      _selectedPage = Jalali.now();
     }
+    _pageController =
+        PageController(initialPage: _calculateInitialPage(_selectedDate));
+    super.initState();
+  }
 
+  int _calculateInitialPage(Jalali date) {
+    int currentMonth = date.month;
     return 99 * 12 + currentMonth - 1;
   }
 
