@@ -6,23 +6,26 @@ Future<DateTime?> pickDate({
   TextDirection direction = TextDirection.rtl,
   Map<DateTime, List>? events,
   MarkerBuilder? marker,
+  DateTime? initialDate,
   bool useOfficialHolyDays = true,
   List<HolyDay> customHolyDays = const [],
 }) async {
   DateTime? selectedDate = await showDialog<DateTime>(
-      context: context,
-      builder: (_) => _TableCalendarPicker(
-          direction, events, marker, useOfficialHolyDays, customHolyDays));
+    context: context,
+    builder: (_) => _TableCalendarPicker(direction, events, marker,
+        useOfficialHolyDays, customHolyDays, initialDate),
+  );
   return selectedDate;
 }
 
 class _TableCalendarPicker extends StatelessWidget {
   const _TableCalendarPicker(this.direction, this.events, this.marker,
-      this.useOfficialHolyDays, this.customHolyDays);
+      this.useOfficialHolyDays, this.customHolyDays, this.initialDate);
 
   final TextDirection direction;
 
   final Map<DateTime, List>? events;
+  final DateTime? initialDate;
   final MarkerBuilder? marker;
   final bool useOfficialHolyDays;
   final List<HolyDay> customHolyDays;
@@ -42,6 +45,12 @@ class _TableCalendarPicker extends StatelessWidget {
           children: [
             Flexible(
               child: JalaliTableCalendar(
+                initialDate: initialDate,
+                direction: direction,
+                customHolyDays: customHolyDays,
+                events: events,
+                useOfficialHolyDays: useOfficialHolyDays,
+                marker: marker,
                 onDaySelected: (date) {
                   selectedDate = date;
                 },

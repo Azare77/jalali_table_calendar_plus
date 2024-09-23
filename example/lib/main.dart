@@ -34,7 +34,9 @@ class _MyHomePageState extends State<MyHomePage> {
   DateTime? dialogSelectedDate;
   late Map<DateTime, List<dynamic>> events;
   bool range = false;
-  DateTime selectedDate = DateTime.now();
+
+  //optional default is current date
+  DateTime initialDate = DateTime.now();
 
   @override
   void initState() {
@@ -72,7 +74,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   "جمعه"
                 ],
               ),
-              selectedDate: selectedDate,
+              initialDate: initialDate,
               customHolyDays: [
                 // use jalali month and day for this
                 HolyDay(month: 4, day: 10), // For Repeated Days
@@ -97,7 +99,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 return null;
               },
               onDaySelected: (DateTime date) {
-                print(date);
+                debugPrint(date.toString());
               },
             ),
             Row(
@@ -115,10 +117,12 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             ElevatedButton(
                 onPressed: () async {
-                  DateTime? dateTime = await pickDate(context: context);
+                  DateTime? dateTime = await pickDate(
+                    context: context,
+                    initialDate: initialDate,
+                  );
                   setState(() {
                     dialogSelectedDate = dateTime;
-                    selectedDate = dialogSelectedDate!;
                   });
                 },
                 child: const Text('انتخاب تاریخ')),
