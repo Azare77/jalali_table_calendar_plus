@@ -23,6 +23,7 @@ class JalaliTableCalendar extends StatefulWidget {
     this.useOfficialHolyDays = true,
     this.customHolyDays = const [],
     this.option,
+    this.selectedDate,
   });
 
   final TextDirection direction;
@@ -34,6 +35,7 @@ class JalaliTableCalendar extends StatefulWidget {
   final bool useOfficialHolyDays;
   final List<HolyDay> customHolyDays;
   final JalaliTableCalendarOption? option;
+  final DateTime? selectedDate;
 
   @override
   JalaliTableCalendarState createState() => JalaliTableCalendarState();
@@ -55,8 +57,30 @@ class JalaliTableCalendarState extends State<JalaliTableCalendar> {
     _pageController = PageController(initialPage: _calculateInitialPage());
   }
 
-  int _calculateInitialPage() {
-    int currentMonth = Jalali.now().month;
+  @override
+  void didUpdateWidget(covariant JalaliTableCalendar oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.selectedDate != null) {
+      setState(() {
+        _selectedDate = Jalali.fromDateTime(widget.selectedDate!);
+      });
+
+      _pageController.animateToPage(
+        _calculateInitialPage(date: Jalali.fromDateTime(widget.selectedDate!)),
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+      );
+    }
+  }
+
+  int _calculateInitialPage({Jalali? date}) {
+    int currentMonth;
+    if (date != null) {
+      currentMonth = date.month;
+    } else {
+      currentMonth = Jalali.now().month;
+    }
+
     return 99 * 12 + currentMonth - 1;
   }
 
