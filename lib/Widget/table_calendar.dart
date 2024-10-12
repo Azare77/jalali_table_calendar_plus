@@ -180,17 +180,17 @@ class JalaliTableCalendarState extends State<JalaliTableCalendar> {
           int month = (index % 12) + 1;
           Jalali firstDayOfMonth = Jalali(year, month, 1);
           int daysInMonth = firstDayOfMonth.monthLength;
-
           int startingWeekday = firstDayOfMonth.weekDay; // 1 (Saturday) - 7 (Friday)
-          return _buildGridView(year, month, daysInMonth, startingWeekday);
+          return _buildGridView(year, month, daysInMonth, startingWeekday, index);
         },
       ),
     );
   }
 
-  Widget _buildGridView(int year, int month, int daysInMonth, int startingWeekday) {
+  Widget _buildGridView(int year, int month, int daysInMonth, int startingWeekday, int pageIndex) {
     return GridView.builder(
       padding: EdgeInsets.zero,
+      key: PageStorageKey(pageIndex),
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 7, mainAxisSpacing: 5, mainAxisExtent: widget.option?.dayItemSize),
       itemCount: daysInMonth + (startingWeekday - 1),
@@ -202,13 +202,16 @@ class JalaliTableCalendarState extends State<JalaliTableCalendar> {
           ); // Empty cell˝
         } else {
           int day = index - (startingWeekday - 2);
-          if (day > _selectedDate.monthLength) {
+
+          if (day > _selectedDate.monthLength && (month == _selectedDate.month)) {
             day = _selectedDate.monthLength;
           }
+
           Jalali date = Jalali(year, month, day);
           bool isSelected = _isSelectedDay(date);
           bool isToday = _isToday(date);
           bool isHolyDay = _isHolyDay(date);
+
           Widget? marker =
               widget.marker != null ? widget.marker!(date.toDateTime(), dayEvents(date.toDateTime())) : null;
 
