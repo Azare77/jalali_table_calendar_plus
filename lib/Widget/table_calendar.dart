@@ -60,8 +60,7 @@ class JalaliTableCalendarState extends State<JalaliTableCalendar> {
       _selectedDate = Jalali.now();
       _selectedPage = Jalali.now();
     }
-    _pageController =
-        PageController(initialPage: _calculateInitialPage(_selectedDate));
+    _pageController = PageController(initialPage: _calculateInitialPage(_selectedDate));
     super.initState();
   }
 
@@ -82,11 +81,7 @@ class JalaliTableCalendarState extends State<JalaliTableCalendar> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          _buildHeader(),
-          _buildDaysOfWeek(),
-          _buildCalendarPageView()
-        ],
+        children: [_buildHeader(), _buildDaysOfWeek(), _buildCalendarPageView()],
       ),
     );
   }
@@ -114,9 +109,7 @@ class JalaliTableCalendarState extends State<JalaliTableCalendar> {
           IconButton(
             icon: const Icon(Icons.chevron_left),
             onPressed: () {
-              _pageController.previousPage(
-                  duration: const Duration(milliseconds: 300),
-                  curve: Curves.ease);
+              _pageController.previousPage(duration: const Duration(milliseconds: 300), curve: Curves.ease);
             },
           ),
           GestureDetector(
@@ -135,16 +128,13 @@ class JalaliTableCalendarState extends State<JalaliTableCalendar> {
             },
             child: Text(
               '${monthNames[_selectedPage.month - 1]} ${_selectedPage.year}',
-              style:
-                  widget.option?.headerStyle ?? const TextStyle(fontSize: 20.0),
+              style: widget.option?.headerStyle ?? const TextStyle(fontSize: 20.0),
             ),
           ),
           IconButton(
             icon: const Icon(Icons.chevron_right),
             onPressed: () {
-              _pageController.nextPage(
-                  duration: const Duration(milliseconds: 300),
-                  curve: Curves.ease);
+              _pageController.nextPage(duration: const Duration(milliseconds: 300), curve: Curves.ease);
             },
           ),
         ],
@@ -163,8 +153,7 @@ class JalaliTableCalendarState extends State<JalaliTableCalendar> {
           child: Center(
             child: Text(
               widget.option?.daysOfWeekTitles?[index] ?? daysOfWeek[index],
-              style: widget.option?.daysOfWeekStyle
-                      ?.copyWith(color: fridayColor) ??
+              style: widget.option?.daysOfWeekStyle?.copyWith(color: fridayColor) ??
                   TextStyle(color: fridayColor),
             ),
           ),
@@ -175,7 +164,7 @@ class JalaliTableCalendarState extends State<JalaliTableCalendar> {
 
   Widget _buildCalendarPageView() {
     return SizedBox(
-      height: 350,
+      height: widget.option?.calendarHeight,
       child: PageView.builder(
         itemCount: 2400, // 200 years * 12 months
         controller: _pageController,
@@ -191,44 +180,45 @@ class JalaliTableCalendarState extends State<JalaliTableCalendar> {
           int month = (index % 12) + 1;
           Jalali firstDayOfMonth = Jalali(year, month, 1);
           int daysInMonth = firstDayOfMonth.monthLength;
-          int startingWeekday =
-              firstDayOfMonth.weekDay; // 1 (Saturday) - 7 (Friday)
-          return _buildGridView(year, month, daysInMonth, startingWeekday);
+          int startingWeekday = firstDayOfMonth.weekDay; // 1 (Saturday) - 7 (Friday)
+          return _buildGridView(year, month, daysInMonth, startingWeekday, index);
         },
       ),
     );
   }
 
-  Widget _buildGridView(
-      int year, int month, int daysInMonth, int startingWeekday) {
+  Widget _buildGridView(int year, int month, int daysInMonth, int startingWeekday, int pageIndex) {
     return GridView.builder(
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 7, mainAxisSpacing: 5, mainAxisExtent: 50),
+      padding: EdgeInsets.zero,
+      key: PageStorageKey(pageIndex),
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 7, mainAxisSpacing: 5, mainAxisExtent: widget.option?.dayItemSize),
       itemCount: daysInMonth + (startingWeekday - 1),
       shrinkWrap: true,
       itemBuilder: (context, index) {
         if (index < startingWeekday - 1) {
           return Container(
             height: 100,
-          ); // Empty cell
+          ); // Empty cell˝
         } else {
           int day = index - (startingWeekday - 2);
-          if (day > _selectedDate.monthLength) {
+
+          if (day > _selectedDate.monthLength && (month == _selectedDate.month)) {
             day = _selectedDate.monthLength;
           }
+
           Jalali date = Jalali(year, month, day);
           bool isSelected = _isSelectedDay(date);
           bool isToday = _isToday(date);
           bool isHolyDay = _isHolyDay(date);
-          Widget? marker = widget.marker != null
-              ? widget.marker!(date.toDateTime(), dayEvents(date.toDateTime()))
-              : null;
+
+          Widget? marker =
+              widget.marker != null ? widget.marker!(date.toDateTime(), dayEvents(date.toDateTime())) : null;
 
           final styleColor = isToday && !isSelected
               ? widget.option?.currentDayColor ?? themeData.primaryColorDark
               : isSelected
-                  ? widget.option?.selectedDayColor ??
-                      themeData.scaffoldBackgroundColor
+                  ? widget.option?.selectedDayColor ?? themeData.scaffoldBackgroundColor
                   : date.weekDay == 7 || isHolyDay
                       ? Colors.red
                       : null;
@@ -249,17 +239,18 @@ class JalaliTableCalendarState extends State<JalaliTableCalendar> {
                 child: Container(
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: isSelected
-                        ? widget.option?.selectedDayShapeColor ??
-                            themeData.primaryColor
-                        : null,
+                    color: isSelected ? widget.option?.selectedDayShapeColor ?? themeData.primaryColor : null,
                   ),
                   child: Center(
                     child: Text(
                       '${date.day}',
-                      style: widget.option?.daysStyle
-                              ?.copyWith(color: styleColor) ??
-                          TextStyle(color: styleColor),
+                      style: () {
+                        if (isToday && widget.option?.todayStyle != null)
+                          return widget.option?.todayStyle!.copyWith(color: styleColor);
+
+                        return widget.option?.daysStyle?.copyWith(color: styleColor) ??
+                            TextStyle(color: styleColor);
+                      }.call(),
                     ),
                   ),
                 ),
@@ -303,9 +294,7 @@ class JalaliTableCalendarState extends State<JalaliTableCalendar> {
 
   bool _isToday(Jalali date) {
     Jalali toDay = Jalali.now();
-    return date.day == toDay.day &&
-        date.month == toDay.month &&
-        date.year == toDay.year;
+    return date.day == toDay.day && date.month == toDay.month && date.year == toDay.year;
   }
 
   void setRange(Jalali date) {
