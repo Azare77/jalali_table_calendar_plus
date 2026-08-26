@@ -64,14 +64,14 @@ class _SelectYearMonthState extends State<_SelectYearMonth> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     if (_SelectMode.year == mode)
-                    IconButton(
-                      icon: const Icon(Icons.chevron_left),
-                      onPressed: () {
-                        _pageController.previousPage(
-                            duration: const Duration(milliseconds: 300),
-                            curve: Curves.ease);
-                      },
-                    ),
+                      IconButton(
+                        icon: const Icon(Icons.chevron_left),
+                        onPressed: () {
+                          _pageController.previousPage(
+                              duration: const Duration(milliseconds: 300),
+                              curve: Curves.ease);
+                        },
+                      ),
                     Flexible(
                       child: GridView.builder(
                         shrinkWrap: true,
@@ -105,14 +105,14 @@ class _SelectYearMonthState extends State<_SelectYearMonth> {
                       ),
                     ),
                     if (_SelectMode.year == mode)
-                    IconButton(
-                      icon: const Icon(Icons.chevron_right),
-                      onPressed: () {
-                        _pageController.nextPage(
-                            duration: const Duration(milliseconds: 300),
-                            curve: Curves.ease);
-                      },
-                    ),
+                      IconButton(
+                        icon: const Icon(Icons.chevron_right),
+                        onPressed: () {
+                          _pageController.nextPage(
+                              duration: const Duration(milliseconds: 300),
+                              curve: Curves.ease);
+                        },
+                      ),
                   ],
                 ),
               );
