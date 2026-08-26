@@ -21,7 +21,7 @@ jalali_table_calendar_plus: ^1.1.3
 
 ```dart
 Widget buildCalendar(BuildContext context) {
-  DateTime today = DateTime.now();
+  DateTime today = DateUtils.dateOnly(DateTime.now());
   Map <DateTime, List<dynamic>>events = {
     today: ['sample event', 26],
     today.add(const Duration(days: 1)): ['all types can use here', {"key": "value"}],
@@ -111,7 +111,7 @@ jalali_table_calendar_plus: ^1.1.3
 
 ```dart
 Widget buildCalendar(BuildContext context) {
-  DateTime today = DateTime.now();
+  DateTime today = DateUtils.dateOnly(DateTime.now());
   Map <DateTime, List<dynamic>>events = {
     today: ['sample event', 26],
     today.add(const Duration(days: 1)): ['all types can use here', {"key": "value"}],
